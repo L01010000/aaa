@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albert Camus Quote</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .terminal-text {
+            font-size: 2rem;
+            text-align: center;
+            margin: 2rem 5rem;
+        }
+        .cursor {
+            display: inline-block;
+            background-color: green;
+            width: 15px;
+            height: 30px;
+            animation: blink 1s infinite;
+            vertical-align: bottom;
+            margin-left: 5px;
+        }
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            50.1%, 100% {
+                opacity: 0;
+            }
+        }
+        @keyframes select {
+            0% {
+                background-color: black;
+                color: green;
+            }
+            100% {
+                background-color: red;
+                color: black;
+            }
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 2rem;
+        }
+        #red-pill-link {
+            color: red;
+            text-decoration: underline;
+            font-size: 1.2rem; /* Adjust the font size as needed */
+            padding: 8px 16px; /* Add padding for better clickability */
+            position: absolute;
+            bottom: 30px; /* Adjust position from bottom */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <img src="s.png" alt="Image" width="400">
+    <div class="terminal-text" id="terminal">
+        <span id="text"></span><span class="cursor"></span>
+    </div>
+    <a href="The_Rebel-Camus.pdf" download id="red-pill-link">Red Pill</a>
+    <script>
+        const textElement = document.getElementById('text');
+        const message = 'The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion. - Albert Camus';
+        let index = 0;
+        let isDeleting = false;
+
+        function type() {
+            if (index < message.length && !isDeleting) {
+                textElement.innerHTML += message.charAt(index);
+                index++;
+                setTimeout(type, 50);
+            } else if (index === message.length && !isDeleting) {
+                isDeleting = true;
+                setTimeout(selectAndDelete, 1000); 
+            } else if (index > 0 && isDeleting) {
+                textElement.innerHTML = message.substring(0, index - 1);
+                index--;
+                setTimeout(type, 50);
+            } else if (index === 0 && isDeleting) {
+                isDeleting = false;
+                setTimeout(type, 1000); 
+            }
+        }
+
+        function selectAndDelete() {
+            textElement.style.animation = "select 0.3s steps(40) forwards";
+            setTimeout(() => {
+                textElement.innerHTML = '';
+                textElement.style.animation = "";
+                index = 0;
+                type();
+            }, 500); 
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            setTimeout(type, 1000); 
+        });
+    </script>
+</body>
+</html>
